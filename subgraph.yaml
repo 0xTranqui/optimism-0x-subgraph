@@ -1,8 +1,8 @@
-specVersion: 0.0.1
+specVersion: 0.0.2
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum
+  - kind: ethereum/contract
     name: ZeroEx
     network: optimism
     source:
@@ -13,26 +13,20 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - ERC721OrderCancelled
-        - ERC721OrderFilled
-        - ERC721OrderPreSigned
-        - ERC1155OrderCancelled
-        - ERC1155OrderFilled
-        - ERC1155OrderPreSigned
+        - Erc721Order
+        - Erc1155Order
+        - Erc721Cancellation
+        - Erc1155Cancellation
       abis:
         - name: ZeroEx
           file: ./abis/ZeroEx.json
       eventHandlers:
-        - event: ERC721OrderCancelled(address,uint256)
-          handler: handleERC721OrderCancelled
-        - event: ERC721OrderFilled(uint8,address,address,uint256,address,uint256,address,uint256,address)
-          handler: handleERC721OrderFilled
         - event: ERC721OrderPreSigned(uint8,address,address,uint256,uint256,address,uint256,(address,uint256,bytes)[],address,uint256,(address,bytes)[])
-          handler: handleERC721OrderPreSigned
-        - event: ERC1155OrderCancelled(address,uint256)
-          handler: handleERC1155OrderCancelled
-        - event: ERC1155OrderFilled(uint8,address,address,uint256,address,uint256,address,uint256,uint128,address)
-          handler: handleERC1155OrderFilled
+          handler: handleErc721OrderPreSigned
         - event: ERC1155OrderPreSigned(uint8,address,address,uint256,uint256,address,uint256,(address,uint256,bytes)[],address,uint256,(address,bytes)[],uint128)
-          handler: handleERC1155OrderPreSigned
+          handler: handleErc1155OrderPreSigned
+        - event: ERC721OrderCancelled(address,uint256)
+          handler: handleErc721OrderCancelled
+        - event: ERC1155OrderCancelled(address,uint256)
+          handler: handleErc1155OrderCancelled
       file: ./src/mapping.ts
